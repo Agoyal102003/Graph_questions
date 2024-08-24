@@ -1,0 +1,50 @@
+// Approach 1
+
+vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int n=mat.size();
+        int m=mat[0].size();
+        vector<vector<int>> vis(n, vector<int>(m, 0));
+        vector<vector<int>> dist(n, vector<int>(m, 0));
+
+        queue<pair<pair<int, int>, int>> q;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+            {
+                if(mat[i][j]==0)
+                {
+                    q.push({{i, j}, 0});
+                    vis[i][j] = 1;
+                }
+            }
+        }
+        int delRow[] = {-1, 0, +1, 0};
+        int delCol[] = {0, +1, 0, -1};
+
+        while(!q.empty())
+        {
+            pair<pair<int, int>, int> node=q.front();
+            int row=node.first.first;
+            int col=node.first.second;
+            int distance=node.second;
+            q.pop();
+            if(vis[row][col]==0)
+            {
+                vis[row][col]=1;
+                dist[row][col]=distance;
+            }
+
+            for(int i=0; i<4; i++)
+            {
+                int nrows = row + delRow[i];
+                int ncols = col + delCol[i];
+
+                if(nrows>=0 && nrows<n && ncols>=0 && ncols<m && vis[nrows][ncols]==0)
+                {
+                    q.push({{nrows, ncols}, distance+1}); 
+                }
+            }
+
+        }
+        return dist;
+    }

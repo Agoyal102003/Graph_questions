@@ -1,0 +1,36 @@
+// Approach 1
+
+bool dfs(pair<int, int> node, vector<int>& vis, vector<int> adj[])
+    {
+        vis[node.first]=1;
+        for(auto it: adj[node.first])
+        {
+            if(vis[it]==0)
+            {
+                if(dfs({it, node.first}, vis, adj))
+                {
+                    return true;
+                }
+            }
+            else if(it !=node.second)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        vector<int> vis(V, 0);
+        for(int i=0; i<V; i++)
+        {
+            if(vis[i]==0)
+            {
+                if(dfs({i, -1}, vis, adj))
+                    return true;
+            }
+        }
+        
+        return false;
+    }

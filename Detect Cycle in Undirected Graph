@@ -1,4 +1,4 @@
-// Approach 1
+// Approach 1 -> Using DFS
 
 bool dfs(pair<int, int> node, vector<int>& vis, vector<int> adj[])
     {
@@ -28,6 +28,50 @@ bool dfs(pair<int, int> node, vector<int>& vis, vector<int> adj[])
             if(vis[i]==0)
             {
                 if(dfs({i, -1}, vis, adj))
+                    return true;
+            }
+        }
+        
+        return false;
+    }
+
+// Approach 2 -> using BFS
+
+bool detect(int node, vector<int>& vis, vector<int> adj[])
+    {
+        vis[node]=1;
+        queue<pair<int, int>> q;
+        q.push({node, -1});
+        while(!q.empty())
+        {
+            int node=q.front().first;
+            int parent=q.front().second;
+            q.pop();
+            
+            for(auto it: adj[node])
+            {
+                if(vis[it]==0)
+                {
+                    vis[it]=1;
+                    q.push({it, node});
+                }
+                else if(parent!=it)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        int vis[V]={0};
+        for(int i=0; i<V; i++)
+        {
+            if(vis[i]==0)
+            {
+                if(detect(i, vis, adj))
                     return true;
             }
         }

@@ -1,0 +1,28 @@
+// Approach 1
+
+vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        queue<int> q;
+        int visited[V]={0};
+        q.push(0);
+        visited[0]=1;
+        vector<int> ans;
+        
+        while(!q.empty())
+        {
+            int node=q.front();
+            q.pop();
+            ans.push_back(node);
+            for(auto neighbour : adj[node])
+            {
+                if(visited[neighbour]==0)
+                {
+                    visited[neighbour]=1;
+                    q.push(neighbour);
+                }
+            }
+        }
+        
+        return ans;
+        
+    }

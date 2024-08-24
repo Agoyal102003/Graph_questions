@@ -1,4 +1,4 @@
-// Approach 1
+// Approach 1 -> TC->O(n*m)
 -> If someone is on the boundary it cannot be covered
 -> Set of Zeroes connected with a boundary O cannot be converted to X
 

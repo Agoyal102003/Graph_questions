@@ -1,0 +1,76 @@
+Bipartite graph is a graph that can be coloured using 2 colors such that no two adjacent nodes are coloured with the same color.
+-> If a graph is linear with no cycle then we can always color it with two color hence linear graph is always bipartite graph.
+-> Any graph with even cycle length can also be bipartite.
+
+So any graph with odd length cycle can never be bipartite graph.
+
+// Approach 1- BFS
+
+bool isBipartite(vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> color(n, -1);
+    
+    // Iterate over all nodes in case of a disconnected graph
+    for(int i = 0; i < n; i++) {
+        if(color[i] == -1) {
+            queue<int> q;
+            q.push(i);
+            color[i] = 0;
+
+            while(!q.empty()) {
+                int node = q.front();
+                q.pop();
+
+                for(auto it : graph[node]) {
+                    if(color[it] == -1) {
+                        q.push(it);
+                        color[it] = 1 - color[node];  // Assign the opposite color
+                    } else if(color[it] == color[node]) {
+                        return false;  // Found two adjacent nodes with the same color
+                    }
+                }
+            }
+        }
+    }
+
+    return true;  // All components are bipartite
+}
+
+// Approach 2 - DFS
+
+bool dfs(int node, int currNodeColor, vector<int>& color, vector<vector<int>>& graph)
+    {
+        color[node]=currNodeColor;
+        for(auto it: graph[node])
+        {
+            if(color[it]==-1)
+            {
+                if(currNodeColor==0)
+                {
+                    if(dfs(it, 1, color, graph)==false) return false;
+                }
+                else{
+                    if(dfs(it, 0, color, graph)==false) return false;
+            }
+                }
+                
+            else if(currNodeColor==color[it])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int> color(n, -1);
+        for(int i=0; i<n; i++)
+        {
+            if(color[i]==-1)
+            {
+                if(dfs(i, 0, color, graph)==false) return false;
+            }
+        }
+        return true;
+    }

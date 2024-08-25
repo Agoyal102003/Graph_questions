@@ -1,0 +1,4 @@
+// Approach 1 -> DFS
+-> Anyone who is a part of a cycle 
+-> Anyone who leads to a cycle 
+is not a safe node

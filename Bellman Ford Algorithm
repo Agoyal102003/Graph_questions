@@ -1,0 +1,54 @@
+Bellman Algo is also a shortest distance finding also but why we need this when we already have dijkastra?
+Dijkastra algorithm fails when there is negative weights and hence this bellman ford algo will solve this problem\
+-> only applicable in Directed Graph and hence if there is an undirected edge then u have to make it directed then only it will work.
+
+Bellman algo states that relax all the edges N-1 times sequentially.
+
+Q1-> Why N-1 iterations?
+Ans-> Coz it was stated that edges can be in any order and suppose in example
+0->1->2->3->4 if edges were like 
+(3, 4, 1)
+(2, 3, 1)
+(1, 2, 1)
+(0, 1, 1)
+then in one iterations only last node will be relaxed and hence N-1 iterations are required in this case to relax all the edges.
+It is possible that in some examples all the edges got relaxed before N-1 iterations but still to make sure we will do N-1 iterations.
+
+Q2-> How to detect negative cycles?
+Ans-> we said that at max we will need N-1 iterations to relax all the edges. So if on Nth iteration if the distance array still got 
+reduced then we can say that there is a negative cycle present in that.
+
+vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) {
+        // Code here
+        vector<int> dist(V, INT_MAX);
+        dist[S]=0;
+        for(int i=1; i<=V-1; i++)
+        {
+            for(auto it:edges)
+            {
+                int u=it[0];
+                int v=it[1];
+                int w=it[2];
+                
+                if(dist[u]!=INT_MAX && dist[u] + w < dist[v])
+                {
+                    dist[v]=dist[u]+w;
+                }
+            }
+        }
+        
+        //Nth relaxation to detect a negative cycle
+            for(auto it:edges)
+            {
+                int u=it[0];
+                int v=it[1];
+                int w=it[2];
+                
+                if(dist[u]!=INT_MAX && dist[u] + w < dist[v])
+                {
+                    return {-1};
+                }
+            }
+    
+            return dist;
+    }

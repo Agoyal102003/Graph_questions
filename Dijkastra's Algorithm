@@ -1,0 +1,82 @@
+Dijkastra is not applicable to graphs with negative weight as it can create an infinite loop
+eg 0 -> 1 with wt=-2 dist of both will be {int_max, int_max}, {int_max, -2}, {-4, -2}, {-4, -6} and it will go on.
+// Approach 1-> Priority Queue -> TC-> ElogV
+
+Ques - Why Priority Queue and not queue when u can get the answer from both ?
+Ans -  Queue will go to all the paths and will take unneccesary time whereas PQ will choose the minimum path at the first place and 
+hence efficient.
+In Dijkstra's algorithm, a priority queue is preferable over a regular queue because it efficiently retrieves the vertex with the 
+smallest known distance (the minimum priority) at each step. This ensures that the algorithm always expands the shortest path first, 
+which is essential for correctly finding the shortest paths in a weighted graph. A regular queue would not maintain this order, 
+leading to inefficient and incorrect path exploration.
+
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+        // first let's develop the adjList
+        priority_queue<pair<int, int> , vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        vector<int> dist(V, INT_MAX);
+        dist[S]=0;
+        pq.push({0, S});
+        
+        while(!pq.empty())
+        {
+            int dis=pq.top().first;
+            int node=pq.top().second;
+            pq.pop();
+            
+            for(auto it: adj[node])
+            {
+                int edgeWt=it[1];
+                int adjnode=it[0];
+                
+                if(dis + edgeWt <dist[adjnode])
+                {
+                    dist[adjnode]=dis+edgeWt;
+                    pq.push({dist[adjnode], adjnode});
+                }
+            }
+        }
+        return dist;
+    }
+
+// Approach 2 -> Set (much faster than priority queue)
+-> It is better as it does not take any duplicate entries and duplicate entries will be made only when we find less distance then the 
+ existing entry and hence it will automatically erase it and hence it saves time and is better.
+
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+        // first let's develop the adjList
+        set<pair<int, int>> st;
+        vector<int> dist(V, INT_MAX);
+        dist[S]=0;
+        st.insert({0, S});
+        
+        while(!st.empty())
+        {
+            auto it= *(st.begin());
+            int node=it.second;
+            int dis=it.first;
+            st.erase(it);
+            
+            for(auto it: adj[node])
+            {
+                int edgeWt=it[1];
+                int adjnode=it[0];
+                
+                if(dis + edgeWt <dist[adjnode])
+                {
+                    if(dist[adjnode]!=INT_MAX)
+                    {
+                        st.erase({dist[adjnode], adjnode});
+                    }
+                    dist[adjnode]=dis+edgeWt;
+                    st.insert({dist[adjnode], adjnode});
+                }
+            }
+        }
+        return dist;
+    }
+
+

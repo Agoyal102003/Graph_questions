@@ -1,0 +1,4 @@
+Its is also a shortest path algo but it is different from dijkastra or bellman ford. It is a multisource node algo instead of single.
+In both other algo, there was a single node and with respect to that u have to find find the shortest distance for all the other node.
+but in this we have to find shortest distance of every node with respect to every other node.
+-> It helps u detect negative cycles as well
